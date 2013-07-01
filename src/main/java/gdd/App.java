@@ -28,7 +28,7 @@ public class App {
 		System.out.println(" done.");
 
 		System.out.print("Generating scenario...");
-		IScenarioGenerator sg = new SGGComplete(g, 2, 10, 40);
+		IScenarioGenerator sg = new SGGComplete(g, 40);
 		// IScenarioGenerator sg = new SGGCompleteLSEQ(g, 2, 11, 10);
 		// IScenarioGenerator sg = new SGBasic();
 		System.out.println(" done.");

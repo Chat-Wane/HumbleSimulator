@@ -13,9 +13,8 @@ public class SGGCompleteLSEQ extends SGGComplete {
 
 	private static Injector injector;
 
-	public SGGCompleteLSEQ(IGraph g, Integer k, Integer r, Integer nbMsg,
-			Injector injector) {
-		super(g, k, r, nbMsg);
+	public SGGCompleteLSEQ(IGraph g, Integer nbMsg, Injector injector) {
+		super(g, nbMsg);
 		SGGCompleteLSEQ.injector = injector;
 	}
 

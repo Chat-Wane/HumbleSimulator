@@ -31,7 +31,7 @@ public class SGGComplete implements IScenarioGenerator {
 
 	private final static RandomEngine re = new DRand(123456789);
 
-	public SGGComplete(IGraph g, Integer k, Integer r, Integer nbMsg) {
+	public SGGComplete(IGraph g, Integer nbMsg) {
 		this.g = g;
 		this.nbMsg = nbMsg;
 	}

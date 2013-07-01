@@ -41,7 +41,7 @@ public class LseqConcurrency {
 
 		System.out.print("Generating scenario...");
 		// IScenarioGenerator sg = new SGGComplete(g, 2, 10, 40);
-		IScenarioGenerator sg = new SGGCompleteLSEQ(g, 2, 11, nbMsgs / nbPeers,
+		IScenarioGenerator sg = new SGGCompleteLSEQ(g, nbMsgs / nbPeers,
 				Guice.createInjector(new GreedRandDoubleModule()));
 		// IScenarioGenerator sg = new SGBasic();
 		System.out.println(" done.");
@@ -62,8 +62,8 @@ public class LseqConcurrency {
 		Float[] avgAndMax = RunWiki.avgAndMaxBitSize(le.getIdTable());
 		System.out.println("avg bitLength=" + avgAndMax[0]);
 		System.out.println("max bitLength=" + avgAndMax[1]);
-		
-		/// /  / / / / /// // / /// / // // // / // // // / / / 
+
+		// / / / / / / /// // / /// / // // // / // // // / / /
 		// / #2 second run to compare
 		System.out.println("========================");
 		System.out.println("========================");
@@ -77,11 +77,9 @@ public class LseqConcurrency {
 		g = new GComplete(peers, 5);
 		// IGraph g = new GRandom(peers, 50, 0.6f);
 		System.out.println(" done.");
-		
-		
+
 		System.out.print("Generating scenario...");
-		IScenarioGenerator sg2 = new SGGCompleteLSEQ(g, 2, 11,
-				nbMsgs / nbPeers,
+		IScenarioGenerator sg2 = new SGGCompleteLSEQ(g, nbMsgs / nbPeers,
 				Guice.createInjector(new GreedRandDoubleModule()));
 		System.out.println(" done.");
 
