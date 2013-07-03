@@ -9,13 +9,13 @@ emits/receipts over a distributed network by defining both the date of
 generating and receiving of an operation.
 
 An example of automatic generation of emits/receipts events is available in
-[SGGComplete](./src/main/java/gdd/scenariogenerators/SGGComplete). This
+[SGGComplete](src/main/java/gdd/scenariogenerators/SGGComplete.java). This
 generator requires the network graph and the number of messages emited by each
 process to generate the timeline of events.
 
 ## Principle ##
 
-### timeline ###
+### Timeline ###
 
 The user provides a timeline of events, specifying when and whom generates the
 events. Two events are currently considered: the emits/received. However, the
