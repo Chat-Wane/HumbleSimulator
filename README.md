@@ -41,7 +41,9 @@ operation is queued in a buffer until it is ready.
 
 ### Export ###
 
-<i>A more detailed description is upcoming...</i>
+Each scenario at the system level can be visualized through two exporters.
+*    An aggregating process of events data which accumulates the occurrences of events during the time of simulations.
+*    A LaTeX/tikz export of the timeline where each peer is displayed with its emission linked to the date of receipt. It shows the broadcasting of operations across the network. However, this representation scales poorly in number of operations and peers.
 
 ## Experiments ##
 
