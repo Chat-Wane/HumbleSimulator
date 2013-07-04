@@ -61,22 +61,22 @@ rounds.
 <tr> <th> </th> <th> latency </th> <th> 5 </th> <th> 10 </th> <th> 20 </th>
      <th> 40 </th> <th> 80 </th> <th> 160 </th> <th> 320 </th> <th> 640 </th> 
 </tr>
-<tr> <th rowspan="2"> h-LSEQ </th> <th> avg bit-length </th> <th> 39.8 </th>
-     <th> 34.8 </th> <th> 33.3 </th> <th> 23.5 </th> <th> 15.5 </th> 
-     <th> 8.9 </th> <th> 7.9 </th> <th> 8.0 </th>
+<tr> <th rowspan="2"> h-LSEQ </th> <th> avg bit-length </th> <td> 39.8 </td>
+     <td> 34.8 </td> <td> 33.3 </td> <td> 23.5 </td> <td> 15.5 </td> 
+     <td> 8.9 </td> <td> 7.9 </td> <td> 8.0 </td>
 </tr>
 
-<tr> <th> max bit-length </th> <th> 46 </th> <th> 46 </th> <th> 46 </th>
-     <th> 46 </th> <th> 36 </th> <th> 19 </th> <th> 19 </th> <th> 19 </th>
+<tr> <th> max bit-length </th> <td> 46 </td> <td> 46 </td> <td> 46 </td>
+     <td> 46 </td> <td> 36 </td> <td> 19 </td> <td> 19 </td> <td> 19 </td>
 </tr>
 
-<tr> <th rowspan="2"> LSEQ </th> <th> avg bit-length </th> <th> 142.2 </th>
-     <th> 85.0 </th> <th> 74.9 </th> <th> 40.0 </th> <th> 26.9 </th>
-     <th> 14.2 </th> <th> 11.9 </th> <th> 8.8 </th>
+<tr> <th rowspan="2"> LSEQ </th> <th> avg bit-length </th> <td> 142.2 </td>
+     <td> 85.0 </td> <td> 74.9 </td> <td> 40.0 </td> <td> 26.9 </td>
+     <td> 14.2 </td> <td> 11.9 </td> <td> 8.8 </td>
 </tr>
 
-<tr> <th> max bit-length </th> <th> 342 </th> <th> 201 </th> <th> 181 </th>
-     <th> 82 </th> <th> 46 </th> <th> 27 </th> <th> 27 </th> <th> 19 </th>
+<tr> <th> max bit-length </th> <td> 342 </td> <td> 201 </td> <td> 181 </td>
+     <td> 82 </td> <td> 46 </td> <td> 27 </td> <td> 27 </td> <td> 19 </td>
 </tr>
 
 
