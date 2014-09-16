@@ -15,7 +15,9 @@ public class Network {
 
 	/**
 	 * Get the distance from this peer to the farthest peer
-	 * @param p the departure peer
+	 * 
+	 * @param p
+	 *            the departure peer
 	 * @return the maximal distance
 	 */
 	public int getMaxDistance(Peer p) {
