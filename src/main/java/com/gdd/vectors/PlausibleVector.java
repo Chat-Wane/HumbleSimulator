@@ -3,7 +3,7 @@ package com.gdd.vectors;
 public class PlausibleVector {
 
 	public int[] v; // vector
-	public int e; // entry
+	public final int e; // entry
 
 	public PlausibleVector(Integer r, Integer e) {
 		this.v = new int[r];

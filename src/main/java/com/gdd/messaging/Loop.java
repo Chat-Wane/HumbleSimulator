@@ -35,7 +35,7 @@ public class Loop {
 			Integer currentTime = iCreationTime.next();
 			// #1 choose a peer which will generate the operation
 			// #2 increment the vector of the peer
-			// #3 
+			// #3 put the info in the respective libraries
 		}
 	}
 

@@ -22,7 +22,9 @@ public class Messages {
 
 	/**
 	 * Return the plausible vector associated to the operation
-	 * @param o the operation
+	 * 
+	 * @param o
+	 *            the operation
 	 * @return the corresponding plausible vector of the operation
 	 */
 	public PlausibleVector getPlausibleVector(Operation o) {
