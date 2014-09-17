@@ -16,5 +16,5 @@ public class Global {
 	
 	
 	// #C Network
-	public final static String GRAPHFILE = "src/main/java/com/gdd/examples/GC10";
+	public final static String GRAPHFILE = "src/main/java/com/gdd/examples/gc10";
 }

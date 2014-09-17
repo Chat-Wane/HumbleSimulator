@@ -2,8 +2,9 @@ import networkx as nx
 
 CG10 = nx.complete_graph(5)
 
-nx.write_gml(CG10,"gc10")
+SPL = nx.shortest_path_length(CG10)
 
-nx.write_weighted_edgelist(CG10,"gc10edge")
-
-print(nx.shortest_path_length(CG10))
+for i in SPL:
+    for j in SPL[i]:
+        print SPL[i][j],
+    print
