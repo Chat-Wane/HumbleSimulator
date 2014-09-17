@@ -1,6 +1,6 @@
 package com.gdd.messaging;
 
-public class Operation {
+public class Operation implements Comparable<Operation> {
 	private final int s; // pointer to the origin
 	private final int c; // unique identifier
 
@@ -15,5 +15,15 @@ public class Operation {
 
 	public int getS() {
 		return s;
+	}
+
+	public int compareTo(Operation o) {
+		if (this.c < o.c) {
+			return -1;
+		}
+		if (this.c > o.c) {
+			return 1;
+		}
+		return 1;
 	}
 }

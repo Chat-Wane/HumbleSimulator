@@ -1,9 +1,8 @@
-package com.gdd.messaging;
+package com.gdd.vectors;
 
 import java.util.HashMap;
 
 import com.gdd.peers.Peer;
-import com.gdd.vectors.PlausibleVector;
 
 public class Vectors {
 
@@ -16,17 +15,28 @@ public class Vectors {
 	 *            the peer
 	 * @return the current vector of the peer in argument
 	 */
-	public PlausibleVector getVector(Peer p) {
+	public static PlausibleVector getVector(Peer p) {
 		return Vectors.vectors.get(p.getS());
+	}
+
+	public static PlausibleVector getVector(Integer pId) {
+		return Vectors.vectors.get(pId);
 	}
 
 	/**
 	 * Change the current vector of the peer in argument
-	 * @param p the peer
-	 * @param v the new vector
+	 * 
+	 * @param p
+	 *            the peer
+	 * @param v
+	 *            the new vector
 	 */
-	public void setVector(Peer p, PlausibleVector v) {
+	public static void setVector(Peer p, PlausibleVector v) {
 		Vectors.vectors.put(p.getS(), v);
+	}
+
+	public static void setVector(Integer pId, PlausibleVector v) {
+		Vectors.vectors.put(pId, v);
 	}
 
 }

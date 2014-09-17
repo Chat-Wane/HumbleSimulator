@@ -15,12 +15,14 @@ public class Network {
 		Network.maxDistance = new int[Global.PEERS];
 		// #1 process the network
 		Network.distanceMatrix = NetworkParser.parse(Global.GRAPHFILE);
-		for (int i = 0; i < distanceMatrix.size(); ++i){
-			for (int j = 0; j < distanceMatrix.get(i).size(); ++j){
-				System.out.println(distanceMatrix.get(i).get(j)+ " ");
+		// #2 process the maxDistance for each peer
+		for (int i = 0; i < Network.distanceMatrix.size(); ++i) {
+			Network.maxDistance[i] = 0;
+			for (int j = 0; j < Network.distanceMatrix.get(i).size(); ++j) {
+				Network.maxDistance[i] = Math.max(Network.maxDistance[i],
+						Network.distanceMatrix.get(i).get(j));
 			}
 		}
-		// (TODO) #2 process the maxDistance for each peer
 	}
 
 	/**
@@ -30,7 +32,7 @@ public class Network {
 	 *            the departure peer
 	 * @return the maximal distance
 	 */
-	public int getMaxDistance(Peer p) {
+	public static int getMaxDistance(Peer p) {
 		return Network.maxDistance[p.getS()];
 	}
 
@@ -43,7 +45,7 @@ public class Network {
 	 *            the arrival peer
 	 * @return
 	 */
-	public int getDistance(Peer from, Peer to) {
+	public static int getDistance(Peer from, Peer to) {
 		return Network.distanceMatrix.get(from.getS()).get(to.getS());
 	}
 

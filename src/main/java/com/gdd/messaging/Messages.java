@@ -1,23 +1,21 @@
 package com.gdd.messaging;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import com.gdd.vectors.PlausibleVector;
 
 public class Messages {
 
-	private static HashMap<Operation, PlausibleVector> library = new HashMap<Operation, PlausibleVector>();
+	private static ArrayList<PlausibleVector> library = new ArrayList<PlausibleVector>();
 
 	/**
 	 * Add an entry to the library of operations
 	 * 
-	 * @param o
-	 *            the unique operation
 	 * @param v
 	 *            the vector associated with the operation
 	 */
-	public void addOperation(Operation o, PlausibleVector v) {
-		Messages.library.put(o, v);
+	public static void addOperation(PlausibleVector v) {
+		Messages.library.add(v);
 	}
 
 	/**
@@ -27,8 +25,8 @@ public class Messages {
 	 *            the operation
 	 * @return the corresponding plausible vector of the operation
 	 */
-	public PlausibleVector getPlausibleVector(Operation o) {
-		return Messages.library.get(o);
+	public static PlausibleVector getPlausibleVector(Operation o) {
+		return Messages.library.get(o.getC());
 	}
 
 }
