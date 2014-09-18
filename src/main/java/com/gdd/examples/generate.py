@@ -1,6 +1,6 @@
 import networkx as nx
 
-CG10 = nx.complete_graph(5)
+CG10 = nx.complete_graph(10)
 
 SPL = nx.shortest_path_length(CG10)
 
