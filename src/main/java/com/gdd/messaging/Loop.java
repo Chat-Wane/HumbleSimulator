@@ -98,8 +98,6 @@ public class Loop {
 	public void after() {
 		for (int i = 0; i < Peers.getPeers().size(); ++i) {
 			HistoryEdge he = HistoryGraph.getPeer(Peers.getPeer(i));
-			System.out.println(i);
-			System.out.println(HistoryGraph.getLength());
 			int pathLength = 0;
 			while (he.getFrom().getC() != -1) {
 				// System.out.println(he.getFrom().getC());
@@ -111,7 +109,6 @@ public class Loop {
 					HistoryEdge potential = iPotential.next();
 					if (potential.getPeers().get(i)) {
 						he = potential;
-						System.out.println(potential.getFrom().getC());
 					}
 				}
 				++pathLength;

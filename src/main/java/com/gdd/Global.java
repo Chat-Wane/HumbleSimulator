@@ -7,7 +7,7 @@ public class Global {
 	// #A Peers and operations
 	public final static int PEERS = 10; // number of peers
 	public final static int TOTALTIME = 3600; // number of loop cycles
-	public final static int OPERATIONS = 3; // uniformely ( for now )
+	public final static int OPERATIONS = 500; // uniformely ( for now )
 												// distributed between peers and
 												// among time
 
