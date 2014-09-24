@@ -6,6 +6,7 @@ import com.gdd.Global;
 
 public class Peers {
 
+	// pid -> Peer
 	private static ArrayList<Peer> peers = new ArrayList<Peer>();
 
 	public Peers() {

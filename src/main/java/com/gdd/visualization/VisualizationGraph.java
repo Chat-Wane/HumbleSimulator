@@ -7,8 +7,8 @@ import java.util.Iterator;
 
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.ext.DOTExporter;
-import org.jgrapht.ext.IntegerNameProvider;
 import org.jgrapht.ext.JGraphModelAdapter;
+import org.jgrapht.ext.StringNameProvider;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -36,17 +36,20 @@ public class VisualizationGraph {
 						he = potential;
 					}
 				}
-				this.graph.addVertex(he.getFrom().getC());
-				this.graph.addVertex(he.getTo().getC());
-				this.graph.addEdge(he.getFrom().getC(), he.getTo().getC()); //
+				if (he.getFrom().getC() != -1) {
+					this.graph.addVertex(he.getFrom().getC());
+					this.graph.addVertex(he.getTo().getC());
+					this.graph.addEdge(he.getFrom().getC(), he.getTo().getC());
+				}
 			}
 		}
 	}
 
 	public void export() {
+		// Warning, the vertex are renamed ( I think ... )
 		DOTExporter<Integer, DefaultEdge> exporter = new DOTExporter<Integer, DefaultEdge>(
-				new IntegerNameProvider<Integer>(),
-				new IntegerNameProvider<Integer>(), null);
+				new StringNameProvider<Integer>(),
+				new StringNameProvider<Integer>(), null);
 
 		try {
 			exporter.export(new FileWriter("graph.dot"), this.graph);

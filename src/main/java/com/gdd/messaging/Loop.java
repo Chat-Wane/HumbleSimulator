@@ -12,6 +12,7 @@ import com.gdd.histories.HistoryEdge;
 import com.gdd.histories.HistoryGraph;
 import com.gdd.peers.Peer;
 import com.gdd.peers.Peers;
+import com.gdd.peers.Stats;
 import com.gdd.vectors.PlausibleVector;
 import com.gdd.vectors.Vectors;
 import com.gdd.visualization.VisualizationGraph;
@@ -38,15 +39,16 @@ public class Loop {
 		// #1 create the peers and initialize their vectors
 		new Peers();
 		new Vectors();
-		for (int i = 0; i < Peers.getPeers().size(); ++i) {
-			Vectors.setVector(i, new PlausibleVector(Global.R, i % Global.R));
-		}
 
 		// #2 create the network
 		new Network();
 
-		// #3 create the history of operation
+		// #3 create the history of operation and buffers of messages
 		new HistoryGraph();
+		new Buffers();
+
+		// #4 some stats glean during execution
+		new Stats();
 
 	}
 
@@ -64,14 +66,33 @@ public class Loop {
 				// #0b get the messages received by the peer
 				ArrayList<Operation> messages = ReceiveMessages.getOperations(
 						p, currentTime);
-				// #0c deliver the messages
-				for (int j = 0; j < messages.size(); ++j) {
-					// #0d (TODO) verify if the operation is ready
-					HistoryGraph.addOperation(p, messages.get(j));
-					p.deliver(messages.get(j));
-					Vectors.getVector(p.getS()).incrementFrom(
-							Messages.getPlausibleVector(messages.get(j)));
+				Buffers.addBufferedOperations(p, messages);
+
+				// #0c deliver the messages that are ready
+				ArrayList<Integer> buffer = Buffers.getBuffer(p);
+				int j = 0;
+				while (j < buffer.size()) {
+					Operation o = Messages.getOperation(buffer.get(j));
+					if (Vectors.getVector(p).isLeq( // ( for the stats only
+							Messages.getPlausibleVector(o))) {
+						Stats.incrementLower(p);
+					}
+					// #0d if ready, deliver and remove it from the buffer
+					if (Vectors.getVector(p).isReady(
+							Messages.getPlausibleVector(o))
+							|| Vectors.getVector(p).isLeq(
+									Messages.getPlausibleVector(o))) {
+						HistoryGraph.addOperation(p, o);
+						p.deliver(o);
+						Vectors.getVector(p.getS()).incrementFrom(
+								Messages.getPlausibleVector(o));
+						Buffers.removeBufferedOperation(p, o);
+						j = 0; // restart examining messages
+					} else {
+						++j;
+					}
 				}
+
 			}
 			// #0b remove old messages
 			ReceiveMessages.garbageCollect(currentTime);
@@ -97,6 +118,8 @@ public class Loop {
 	 * results.
 	 */
 	public void after() {
+
+		// #1 measuring size of the history for each peer
 		for (int i = 0; i < Peers.getPeers().size(); ++i) {
 			HistoryEdge he = HistoryGraph.getPeer(Peers.getPeer(i));
 			int pathLength = 0;
@@ -113,12 +136,20 @@ public class Loop {
 				}
 				++pathLength;
 			}
-			System.out.println(i + " : "
+
+			int sum = 0;
+			for (int j = 0; j < Global.R; ++j) {
+				sum += Vectors.getVector(i).get(j);
+			}
+
+			System.out.println(i + " : [Sum " + sum + "][Low "
+					+ Stats.getLower(Peers.getPeer(i)) + "][Max "
 					+ HistoryGraph.getPeer(Peers.getPeer(i)).getTo().getC()
-					+ Arrays.toString(Vectors.getVector(i).v) + "  "
-					+ pathLength);
+					+ "][PTH " + pathLength + "] "
+					+ Arrays.toString(Vectors.getVector(i).v));
 		}
 
+		// #2 export the history to a .dot file
 		VisualizationGraph vg = new VisualizationGraph();
 		vg.export();
 	}
