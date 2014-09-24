@@ -14,6 +14,7 @@ import com.gdd.peers.Peer;
 import com.gdd.peers.Peers;
 import com.gdd.vectors.PlausibleVector;
 import com.gdd.vectors.Vectors;
+import com.gdd.visualization.VisualizationGraph;
 
 /**
  * Decompose the cycle of creation and execution of operations until the export
@@ -100,7 +101,6 @@ public class Loop {
 			HistoryEdge he = HistoryGraph.getPeer(Peers.getPeer(i));
 			int pathLength = 0;
 			while (he.getFrom().getC() != -1) {
-				// System.out.println(he.getFrom().getC());
 				Collection<HistoryEdge> potentialParentEdge = HistoryGraph
 						.getParentEdges(he.getFrom());
 				Iterator<HistoryEdge> iPotential = potentialParentEdge
@@ -118,5 +118,8 @@ public class Loop {
 					+ Arrays.toString(Vectors.getVector(i).v) + "  "
 					+ pathLength);
 		}
+
+		VisualizationGraph vg = new VisualizationGraph();
+		vg.export();
 	}
 }
