@@ -1,11 +1,17 @@
 package com.gdd.messaging;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Random;
+
+import cern.jet.random.Poisson;
+import cern.jet.random.engine.DRand;
 
 import com.gdd.Global;
 import com.gdd.histories.HistoryEdge;
@@ -22,8 +28,10 @@ import com.gdd.visualization.VisualizationGraph;
  */
 public class Loop {
 
-	private final Random rng = new Random(Global.SEED);
+	private final static Random rng = new Random(Global.SEED);
 	private ArrayList<Integer> creationTime = new ArrayList<Integer>();
+	private final static Poisson poisson = new Poisson(Global.TOTALTIME / 2,
+			new DRand((int) Global.SEED));
 
 	/**
 	 * function executed before the execution loop is started. It initializes
@@ -32,7 +40,7 @@ public class Loop {
 	public void before() {
 		// #0 create the creation time of all the operations
 		for (int i = 0; i < Global.OPERATIONS; ++i) {
-			this.creationTime.add(rng.nextInt(Global.TOTALTIME));
+			this.creationTime.add(poisson.nextInt()); // rng.nextInt(Global.TOTALTIME));
 		}
 		Collections.sort(this.creationTime);
 
@@ -152,5 +160,26 @@ public class Loop {
 		// #2 export the history to a .dot file
 		VisualizationGraph vg = new VisualizationGraph();
 		vg.export();
+
+		// #3 export the creation of operations
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter("operations.txt", "UTF-8");
+			Integer t = 0;
+			Iterator<Integer> iCreationTime = creationTime.iterator();
+			while (iCreationTime.hasNext()){
+				Integer creation = iCreationTime.next();
+			}
+			writer.println("The first line");
+			writer.println("The second line");
+			writer.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 }
