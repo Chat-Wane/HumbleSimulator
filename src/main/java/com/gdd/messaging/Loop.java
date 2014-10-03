@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Random;
 
-import cern.jet.random.Poisson;
+import cern.jet.random.Normal;
 import cern.jet.random.engine.DRand;
 
 import com.gdd.Global;
@@ -30,8 +30,8 @@ public class Loop {
 
 	private final static Random rng = new Random(Global.SEED);
 	private ArrayList<Integer> creationTime = new ArrayList<Integer>();
-	private final static Poisson poisson = new Poisson(Global.TOTALTIME / 2,
-			new DRand((int) Global.SEED));
+	private final static Normal normal = new Normal(Global.TOTALTIME / 2,
+			Global.TOTALTIME / 2 * 0.33, new DRand((int) Global.SEED));
 
 	/**
 	 * function executed before the execution loop is started. It initializes
@@ -40,7 +40,11 @@ public class Loop {
 	public void before() {
 		// #0 create the creation time of all the operations
 		for (int i = 0; i < Global.OPERATIONS; ++i) {
-			this.creationTime.add(poisson.nextInt()); // rng.nextInt(Global.TOTALTIME));
+			Integer random = normal.nextInt();
+			while (random < 0 || random > Global.TOTALTIME) {
+				random = normal.nextInt();
+			}
+			this.creationTime.add(random); // rng.nextInt(Global.TOTALTIME));
 		}
 		Collections.sort(this.creationTime);
 
@@ -84,6 +88,7 @@ public class Loop {
 					if (Vectors.getVector(p).isLeq( // ( for the stats only
 							Messages.getPlausibleVector(o))) {
 						Stats.incrementLower(p);
+						Stats.addLower(currentTime);
 					}
 					// #0d if ready, deliver and remove it from the buffer
 					if (Vectors.getVector(p).isReady(
@@ -165,13 +170,45 @@ public class Loop {
 		PrintWriter writer;
 		try {
 			writer = new PrintWriter("operations.txt", "UTF-8");
-			Integer t = 0;
 			Iterator<Integer> iCreationTime = creationTime.iterator();
-			while (iCreationTime.hasNext()){
+			int sum = 0;
+			Integer previous = 0;
+			while (iCreationTime.hasNext()) {
 				Integer creation = iCreationTime.next();
+				// if (!creation.equals(previous)) {
+				// writer.println(previous + " " + sum);
+				// sum = 1;
+				// previous = creation;
+				// } else {
+				// sum += 1;
+				// }
+				writer.println(creation);
 			}
-			writer.println("The first line");
-			writer.println("The second line");
+			writer.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			writer = new PrintWriter("lowers.txt", "UTF-8");
+			Iterator<Integer> iLowers = Stats.lowers.iterator();
+			int sum = 0;
+			Integer previous = 0;
+			while (iLowers.hasNext()) {
+				Integer creation = iLowers.next();
+				// if (!creation.equals(previous)) {
+				// writer.println(previous + " " + sum);
+				// sum = 1;
+				// previous = creation;
+				// } else {
+				// sum += 1;
+				// }
+				writer.println(creation);
+			}
 			writer.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
