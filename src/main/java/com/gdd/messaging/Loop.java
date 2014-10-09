@@ -217,6 +217,8 @@ public class Loop {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		System.out.println("AVG SIZE OF PATHS= " + Network.getAvgDistance());
 
 	}
 }

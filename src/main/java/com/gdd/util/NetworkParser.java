@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.gdd.Global;
+
 public class NetworkParser {
 
 	/**
@@ -26,7 +28,8 @@ public class NetworkParser {
 				result.add(new ArrayList<Integer>());
 				Scanner scannerInt = new Scanner(line);
 				while (scannerInt.hasNextInt()) {
-					Integer distance = scannerInt.nextInt();
+					Integer distance = (int) Math.ceil(scannerInt.nextInt()
+							*(double) Global.lagMultiplier);
 					result.get(result.size() - 1).add(distance);
 				}
 				// remove the last empty list

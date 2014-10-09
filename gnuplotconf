@@ -1,5 +1,6 @@
 reset
 n=50 #number of intervals
+peer=1./100.
 max=3600. #max value
 min=0. #min value
 width=(max-min)/n #interval width
@@ -19,4 +20,4 @@ set tics out nomirror
 set xlabel "x"
 set ylabel "Frequency"
 #count and plot
-plot "operations.txt" u (hist($1,width)):(1.0) smooth freq w boxes lc rgb"green" notitle, "lowers.txt" u (hist($1,width)):(0.01) smooth freq w boxes lc rgb"orange" notitle
+plot "operations.txt" u (hist($1,width)):(1.0) smooth freq w boxes lc rgb"green" notitle, "lowers.txt" u (hist($1,width)):(peer) smooth freq w boxes lc rgb"orange" notitle

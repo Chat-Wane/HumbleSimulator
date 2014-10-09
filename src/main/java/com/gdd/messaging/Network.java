@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.gdd.Global;
 import com.gdd.peers.Peer;
+import com.gdd.peers.Peers;
 import com.gdd.util.NetworkParser;
 
 public class Network {
@@ -49,4 +50,16 @@ public class Network {
 		return Network.distanceMatrix.get(from.getS()).get(to.getS());
 	}
 
+	public static float getAvgDistance() {
+		int sum = 0;
+		for (int i = 0; i < Global.PEERS; ++i) {
+			for (int j = 0; j < Global.PEERS; ++j) {
+				if (i != j) {
+					sum += Network.getDistance(Peers.getPeer(i),
+							Peers.getPeer(j));
+				}
+			}
+		}
+		return (float) (sum / (Math.pow((double) Global.PEERS - 1, 2.0)));
+	}
 }
