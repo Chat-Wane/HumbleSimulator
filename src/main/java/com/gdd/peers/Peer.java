@@ -10,6 +10,8 @@ public class Peer {
 	// the operations received by the peer
 	private IntervalWithExceptions iwe = new IntervalWithExceptions();
 
+	private boolean down = false;
+
 	/**
 	 * Constructor
 	 * 
@@ -41,4 +43,21 @@ public class Peer {
 	public void deliver(Operation o) {
 		this.iwe.add(o.getC());
 	}
+
+	public void setDown() {
+		this.down = true;
+	}
+
+	public void setUp() {
+		this.down = false;
+	}
+
+	public boolean isDown() {
+		return this.down;
+	}
+
+	public boolean isUp() {
+		return !this.down;
+	}
+
 }

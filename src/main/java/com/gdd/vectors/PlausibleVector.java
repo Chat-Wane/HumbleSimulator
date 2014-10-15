@@ -48,6 +48,16 @@ public class PlausibleVector {
 	};
 
 	/**
+	 * decrement the entry given another plausible vector
+	 * 
+	 * @param pv
+	 *            the other plausible vector
+	 */
+	public void decrementFrom(PlausibleVector pv) {
+		this.v[pv.e] = Math.min(this.v[pv.e], pv.v[pv.e]);
+	}
+
+	/**
 	 * Check if the given plausible vector is ready regarding the current values
 	 * of "this" vector
 	 * 

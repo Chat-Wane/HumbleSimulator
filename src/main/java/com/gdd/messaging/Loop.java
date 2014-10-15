@@ -200,13 +200,6 @@ public class Loop {
 			Integer previous = 0;
 			while (iLowers.hasNext()) {
 				Integer creation = iLowers.next();
-				// if (!creation.equals(previous)) {
-				// writer.println(previous + " " + sum);
-				// sum = 1;
-				// previous = creation;
-				// } else {
-				// sum += 1;
-				// }
 				writer.println(creation);
 			}
 			writer.close();
@@ -217,8 +210,34 @@ public class Loop {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		System.out.println("AVG SIZE OF PATHS= " + Network.getAvgDistance());
+
+		if (Stats.pathLengths.size() > 0) {
+			int sum = 0;
+			int max = 0;
+			for (int i = 0; i < Stats.pathLengths.size(); ++i) {
+				sum += Stats.pathLengths.get(i);
+				max = Math.max(max, Stats.pathLengths.get(i));
+			}
+			System.out.println("AVG UPPER SIZE OF RECOVERY= " + sum
+					/ (float) Stats.pathLengths.size());
+			System.out.println("MAX UPPER SIZE OF RECOVERY= " + max);
+		}
+
+		try {
+			writer = new PrintWriter("paths.txt", "UTF-8");
+			for (int i = 0; i < Stats.pathLengths.size(); ++i) {
+				writer.println(Stats.pathLengths.get(i));
+			}
+			writer.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 }

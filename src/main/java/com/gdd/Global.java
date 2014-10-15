@@ -6,9 +6,9 @@ public class Global {
 
 	// #A Peers and operations
 	public final static int PEERS = 100; // number of peers
-	public final static int TOTALTIME = 3600; // time of the simulation
+	public final static int TOTALTIME = 1750; // time of the simulation
 												// (arbitrary unit)
-	public final static int OPERATIONS = 600; // uniformely ( for now )
+	public final static int OPERATIONS = 300; // uniformely ( for now )
 												// distributed between peers and
 												// among time
 

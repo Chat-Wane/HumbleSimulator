@@ -8,6 +8,7 @@ public class Stats {
 
 	private static ArrayList<StatsElement> stats = new ArrayList<StatsElement>();
 	public static ArrayList<Integer> lowers = new ArrayList<Integer>();
+	public static ArrayList<Integer> pathLengths = new ArrayList<Integer>();
 
 	public Stats() {
 		for (int i = 0; i < Global.PEERS; ++i) {

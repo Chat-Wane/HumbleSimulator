@@ -39,6 +39,17 @@ public class HistoryEdge {
 		this.peers.set(p.getS());
 	}
 
+	/**
+	 * Remove the peer from the list of peers that travalled trough this edge.
+	 * It can happen when the peer modifies its log
+	 * 
+	 * @param p
+	 *            the peer to remove from this edge
+	 */
+	public void delPeer(Peer p) {
+		this.peers.clear(p.getS());
+	}
+
 	public Operation getFrom() {
 		return from;
 	}
