@@ -37,6 +37,7 @@ public class HistoryGraph {
 	private static void addLowerOperation(Peer p, Operation o) {
 		// #1 if lower, go backward to find the proper location in the
 		// history
+		o.addPeer(p);
 		HistoryEdge he = HistoryGraph.getPeer(p);
 		PlausibleVector pv = new PlausibleVector(Vectors.getVector(p));
 		PlausibleVector addedOppv = Messages.getPlausibleVector(o);
@@ -50,7 +51,9 @@ public class HistoryGraph {
 			PlausibleVector oppv = Messages.getPlausibleVector(lastOperation);
 			// copy
 			// System.out.println("BEFAR " + Arrays.toString(pv.v));
-			pv.decrementFrom(oppv);
+			if (!lastOperation.isMarked(p)) {
+				pv.decrementFrom(oppv);
+			}
 			/*
 			 * System.out.println("AFTAR " + Arrays.toString(pv.v));
 			 * System.out.println("READY" +
@@ -58,7 +61,7 @@ public class HistoryGraph {
 			 */
 			// #3 if the plausible vector is lower now, backward iteration
 			// must be stopped
-			if (pv.get(addedOppv.e) < addedOppv.get(addedOppv.e)) {
+			if (!pv.isLeq(addedOppv)) {
 				found = true;
 			} else {
 				// #4 find the previous history edge used by peer p

@@ -220,9 +220,9 @@ public class Loop {
 				sum += Stats.pathLengths.get(i);
 				max = Math.max(max, Stats.pathLengths.get(i));
 			}
-			System.out.println("AVG UPPER SIZE OF RECOVERY= " + sum
+			System.out.println("AVG SIZE OF RECOVERY= " + sum
 					/ (float) Stats.pathLengths.size());
-			System.out.println("MAX UPPER SIZE OF RECOVERY= " + max);
+			System.out.println("MAX SIZE OF RECOVERY= " + max);
 		}
 
 		try {
