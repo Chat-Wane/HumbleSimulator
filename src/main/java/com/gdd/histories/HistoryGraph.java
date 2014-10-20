@@ -1,13 +1,16 @@
 package com.gdd.histories;
 
+import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import cern.colt.Arrays;
+
 import com.gdd.messaging.Messages;
 import com.gdd.messaging.Operation;
 import com.gdd.peers.Peer;
-import com.gdd.peers.Stats;
+import com.gdd.stats.Stats;
 import com.gdd.vectors.PlausibleVector;
 import com.gdd.vectors.Vectors;
 
@@ -50,15 +53,10 @@ public class HistoryGraph {
 			Operation lastOperation = Messages.getOperation(he.getTo().getC());
 			PlausibleVector oppv = Messages.getPlausibleVector(lastOperation);
 			// copy
-			// System.out.println("BEFAR " + Arrays.toString(pv.v));
 			if (!lastOperation.isMarked(p)) {
 				pv.decrementFrom(oppv);
 			}
-			/*
-			 * System.out.println("AFTAR " + Arrays.toString(pv.v));
-			 * System.out.println("READY" +
-			 * Arrays.toString(Messages.getPlausibleVector(o).v));
-			 */
+
 			// #3 if the plausible vector is lower now, backward iteration
 			// must be stopped
 			if (!pv.isLeq(addedOppv)) {
@@ -77,20 +75,16 @@ public class HistoryGraph {
 				}
 			}
 		}
-		// while (!found) {
-		// --pathLength;
-		//
-		// }
 
 		// #5 add the operation in the found place
 		he.delPeer(p);
-		if (!HistoryGraph.opToEdge.get(he.getTo()).containsKey(o)) {
-			HistoryGraph.opToEdge.get(he.getTo()).put(o,
-					new HistoryEdge(o, he.getTo()));
-		}
 		if (!HistoryGraph.opToEdge.get(o).containsKey(he.getFrom())) {
 			HistoryGraph.opToEdge.get(o).put(he.getFrom(),
 					new HistoryEdge(he.getFrom(), o));
+		}
+		if (!HistoryGraph.opToEdge.get(he.getTo()).containsKey(o)) {
+			HistoryGraph.opToEdge.get(he.getTo()).put(o,
+					new HistoryEdge(o, he.getTo()));
 		}
 		HistoryGraph.opToEdge.get(he.getTo()).get(o).addPeer(p);
 		HistoryGraph.opToEdge.get(o).get(he.getFrom()).addPeer(p);

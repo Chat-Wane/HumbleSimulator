@@ -1,8 +1,9 @@
-package com.gdd.peers;
+package com.gdd.stats;
 
 import java.util.ArrayList;
 
 import com.gdd.Global;
+import com.gdd.peers.Peer;
 
 public class Stats {
 

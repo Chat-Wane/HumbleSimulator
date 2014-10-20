@@ -16,9 +16,10 @@ import cern.jet.random.engine.DRand;
 import com.gdd.Global;
 import com.gdd.histories.HistoryEdge;
 import com.gdd.histories.HistoryGraph;
+import com.gdd.peers.Down;
 import com.gdd.peers.Peer;
 import com.gdd.peers.Peers;
-import com.gdd.peers.Stats;
+import com.gdd.stats.Stats;
 import com.gdd.vectors.PlausibleVector;
 import com.gdd.vectors.Vectors;
 import com.gdd.visualization.VisualizationGraph;
@@ -71,15 +72,24 @@ public class Loop {
 		Iterator<Integer> iCreationTime = creationTime.iterator();
 		while (iCreationTime.hasNext()) {
 			Integer currentTime = iCreationTime.next();
+			// #-2 process the peers that go up
+			Down.wakeUp(currentTime);
+			// #-1 process the peers that go down
+			Down.goToSleep(currentTime);
+
 			// #0 process all the message to receive
 			// #0a for each peer
 			for (int i = 0; i < Peers.getPeers().size(); ++i) {
 				Peer p = Peers.getPeer(i);
-				// #0b get the messages received by the peer
-				ArrayList<Operation> messages = ReceiveMessages.getOperations(
-						p, currentTime);
-				Buffers.addBufferedOperations(p, messages);
-
+				if (!Down.isDown(p)) {
+					// #0b get the messages received by the peer
+					// if the peer is down, he does not receive new operation,
+					// however he still process the one he received (do not
+					// change the semantic of isDown)
+					ArrayList<Operation> messages = ReceiveMessages
+							.getOperations(p, currentTime);
+					Buffers.addBufferedOperations(p, messages);
+				}
 				// #0c deliver the messages that are ready
 				ArrayList<Integer> buffer = Buffers.getBuffer(p);
 				int j = 0;
@@ -105,13 +115,15 @@ public class Loop {
 						++j;
 					}
 				}
-
 			}
 			// #0b remove old messages
 			ReceiveMessages.garbageCollect(currentTime);
-
 			// #1 choose a peer which will generate the operation
 			Integer pId = rng.nextInt(Global.PEERS);
+			while (Down.isDown(Peers.getPeer(pId))) {
+				pId = rng.nextInt(Global.PEERS); // a down peer do not generate
+													// operations
+			}
 			// #2 increment the vector of the peer
 			Vectors.getVector(pId).increment();
 			// #3 put the info in the respective libraries
@@ -171,17 +183,8 @@ public class Loop {
 		try {
 			writer = new PrintWriter("operations.txt", "UTF-8");
 			Iterator<Integer> iCreationTime = creationTime.iterator();
-			int sum = 0;
-			Integer previous = 0;
 			while (iCreationTime.hasNext()) {
 				Integer creation = iCreationTime.next();
-				// if (!creation.equals(previous)) {
-				// writer.println(previous + " " + sum);
-				// sum = 1;
-				// previous = creation;
-				// } else {
-				// sum += 1;
-				// }
 				writer.println(creation);
 			}
 			writer.close();
@@ -196,8 +199,6 @@ public class Loop {
 		try {
 			writer = new PrintWriter("lowers.txt", "UTF-8");
 			Iterator<Integer> iLowers = Stats.lowers.iterator();
-			int sum = 0;
-			Integer previous = 0;
 			while (iLowers.hasNext()) {
 				Integer creation = iLowers.next();
 				writer.println(creation);

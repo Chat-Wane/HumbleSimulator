@@ -17,7 +17,7 @@ set xtics min,(max-min)/5,max
 set boxwidth width*0.9
 set style fill solid 0.5 #fillstyle
 set tics out nomirror
-set xlabel "x"
-set ylabel "Frequency"
+set xlabel "time"
+set ylabel "number of operations"
 #count and plot
-plot "operations.txt" u (hist($1,width)):(1.0) smooth freq w boxes lc rgb"green" notitle, "lowers.txt" u (hist($1,width)):(peer) smooth freq w boxes lc rgb"orange" notitle
+plot "operations.txt" u (hist($1,width)):(1.0) smooth freq w boxes lc rgb"green" title "generation", "lowers.txt" u (hist($1,width)):(peer) smooth freq w boxes lc rgb"orange" title "potential fault"

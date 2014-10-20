@@ -51,7 +51,10 @@ public class Buffers {
 	public static void addBufferedOperations(Peer p,
 			ArrayList<Operation> operations) {
 		for (int i = 0; i < operations.size(); ++i) {
-			Buffers.buffers.get(p.getS()).add(operations.get(i).getC());
+			if (!Buffers.buffers.get(p.getS()).contains(
+					operations.get(i).getC())) {
+				Buffers.buffers.get(p.getS()).add(operations.get(i).getC());
+			}
 		}
 	}
 

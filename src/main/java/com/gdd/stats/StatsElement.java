@@ -1,4 +1,4 @@
-package com.gdd.peers;
+package com.gdd.stats;
 
 public class StatsElement {
 

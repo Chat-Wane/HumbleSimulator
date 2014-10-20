@@ -54,7 +54,7 @@ public class PlausibleVector {
 	 *            the other plausible vector
 	 */
 	public void decrementFrom(PlausibleVector pv) {
-		this.v[pv.e] = Math.min(this.v[pv.e], pv.v[pv.e]);
+		this.v[pv.e] = this.v[pv.e] - 1;
 	}
 
 	/**
