@@ -7,7 +7,10 @@ import com.gdd.peers.Peer;
 
 public class Stats {
 
+	// stats per peer
 	private static ArrayList<StatsElement> stats = new ArrayList<StatsElement>();
+
+	// stats over time
 	public static ArrayList<Integer> lowers = new ArrayList<Integer>();
 	public static ArrayList<Integer> pathLengths = new ArrayList<Integer>();
 
@@ -27,5 +30,11 @@ public class Stats {
 
 	public static int getLower(Peer p) {
 		return Stats.stats.get(p.getS()).getLower();
+	}
+
+	public static void addStatsAntiEntropy(Peer p, Integer time,
+			Integer optimal, Integer actual) {
+		Stats.stats.get(p.getS()).addAntiEntropy(
+				new StatsAntiEntropy(time, optimal, actual));
 	}
 }

@@ -120,4 +120,18 @@ public class PlausibleVector {
 		return equals;
 	}
 
+	/**
+	 * process the number of differences between the two vectors
+	 * 
+	 * @param pv
+	 *            the other plausible vector
+	 * @return the number of differences
+	 */
+	public int diffNumber(PlausibleVector pv) {
+		int sum = 0;
+		for (int i = 0; i < this.v.length; ++i) {
+			sum += Math.abs(this.v[i] - pv.v[i]);
+		}
+		return sum;
+	}
 }

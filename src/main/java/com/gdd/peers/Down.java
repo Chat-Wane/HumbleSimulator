@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.gdd.Global;
+import com.gdd.stats.Stats;
+import com.gdd.vectors.Vectors;
 
 public class Down {
 
@@ -58,7 +60,7 @@ public class Down {
 				if (!Down.isDown(Peers.getPeer(uid))) {
 					Down.antientropy(
 							Peers.getPeer(Down.downPeers.get(0).getUid()),
-							Peers.getPeer(uid));
+							Peers.getPeer(uid), currentTime);
 					++j;
 				}
 			}
@@ -84,8 +86,17 @@ public class Down {
 	 *            the peer that initiates the anti entropy
 	 * @param receiver
 	 *            the peer that receives the anti entropy request
+	 * @param currentTime
+	 *            the time of the main loop
 	 */
-	public static void antientropy(Peer origin, Peer receiver) {
-		
+	public static void antientropy(Peer origin, Peer receiver,
+			Integer currentTime) {
+		// #1 count the number of optimal operation to retrieved 4 Stats !
+		int optimal = receiver.getIwe().diffNumber(origin.getIwe());
+		// #2 count the number of messages transfered from one to the other
+		int actual = Vectors.getVector(receiver).diffNumber(
+				Vectors.getVector(origin))
+				+ Stats.getLower(receiver); // (TODO) change the diff style
+		Stats.addStatsAntiEntropy(origin, currentTime, optimal, actual);
 	}
 }
