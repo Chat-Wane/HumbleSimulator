@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.gdd.Global;
+import com.gdd.messaging.Buffers;
 import com.gdd.stats.Stats;
 import com.gdd.vectors.Vectors;
 
@@ -92,11 +93,13 @@ public class Down {
 	public static void antientropy(Peer origin, Peer receiver,
 			Integer currentTime) {
 		// #1 count the number of optimal operation to retrieved 4 Stats !
-		int optimal = receiver.getIwe().diffNumber(origin.getIwe());
+		int optimal = receiver.getIwe().diffFromToNumber(origin.getIwe());
 		// #2 count the number of messages transfered from one to the other
-		int actual = Vectors.getVector(receiver).diffNumber(
+		int actual = Vectors.getVector(receiver).diffFromToNumber(
 				Vectors.getVector(origin))
 				+ Stats.getLower(receiver); // (TODO) change the diff style
 		Stats.addStatsAntiEntropy(origin, currentTime, optimal, actual);
+		Buffers.addBufferedOperations(origin, receiver.getIwe()
+				.antiEntropyFromTo(origin.getIwe()));
 	}
 }

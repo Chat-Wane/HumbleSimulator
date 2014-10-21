@@ -13,11 +13,11 @@ public class Global {
 												// among time
 
 	// #B Vector properties
-	public final static int R = 10; // the size of the vector
+	public final static int R = 50; // the size of the vector
 
 	// #C Network
 	public final static String GRAPHFILE = "src/main/java/com/gdd/examples/nwsg100";
-	public final static float lagMultiplier = 9f;
+	public final static float lagMultiplier = 1.4f;
 	public final static float churn = 0.1f; // constantly a churn percentage of
 											// peers down during the experiment
 	public final static int churnDuration = 50; // a site is down 50 rounds

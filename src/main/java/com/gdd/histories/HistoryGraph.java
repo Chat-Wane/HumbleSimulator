@@ -1,11 +1,8 @@
 package com.gdd.histories;
 
-import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-
-import cern.colt.Arrays;
 
 import com.gdd.messaging.Messages;
 import com.gdd.messaging.Operation;

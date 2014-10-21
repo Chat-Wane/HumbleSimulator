@@ -134,4 +134,24 @@ public class PlausibleVector {
 		}
 		return sum;
 	}
+
+	/**
+	 * process the number of missing operation of the vector passed in argument,
+	 * i.e., it ignores when pv in argument is higher than this
+	 * 
+	 * @param pv
+	 *            the vector that misses some operation
+	 * @return the number of operations that this must transmit to the peer
+	 *         holding the PV in argument
+	 */
+	public int diffFromToNumber(PlausibleVector pv) {
+		int sum = 0;
+		for (int i = 0; i < this.v.length; ++i) {
+			int diff = this.v[i] - pv.v[i];
+			if (diff >= 0) {
+				sum += diff;
+			}
+		}
+		return sum;
+	}
 }

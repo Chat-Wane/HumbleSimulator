@@ -2,6 +2,9 @@ package com.gdd.peers;
 
 import java.util.ArrayList;
 
+import com.gdd.messaging.Messages;
+import com.gdd.messaging.Operation;
+
 public class IntervalWithExceptions {
 
 	private Integer rightBound = -1;
@@ -57,4 +60,56 @@ public class IntervalWithExceptions {
 		sum += iwe.exceptions.size() - sumFound;
 		return sum;
 	}
+
+	/**
+	 * process the number of missing operation of interval passed in argument,
+	 * i.e., it ignores when iwe in argument is higher than this
+	 * 
+	 * @param pv
+	 *            the vector that misses some operation
+	 * @return the number of operations that this must transmit to the peer
+	 *         holding the IWE in argument
+	 */
+	public int diffFromToNumber(IntervalWithExceptions iwe) {
+		int sum = 0;
+		int diff = this.rightBound - iwe.rightBound;
+		if (diff > 0) {
+			sum = diff;
+		}
+		for (int i = 0; i < iwe.exceptions.size(); ++i) {
+			if (iwe.exceptions.get(i) < Math.min(this.rightBound,
+					iwe.rightBound)
+					&& (!this.exceptions.contains(iwe.exceptions.get(i)))) {
+				++sum;
+			}
+		}
+		return sum;
+	}
+
+	/**
+	 * get the operations that are missing at the iwe peer
+	 * 
+	 * @param iwe
+	 *            the interval with exception of the requesting peer
+	 * @return the list of operation missing at the remote peer
+	 */
+	public ArrayList<Operation> antiEntropyFromTo(IntervalWithExceptions iwe) {
+		ArrayList<Operation> missingOperations = new ArrayList<Operation>();
+		int diff = this.rightBound - iwe.rightBound;
+		if (diff > 0) {
+			for (int i = this.rightBound; i > iwe.rightBound; --i) {
+				missingOperations.add(Messages.getOperation(i));
+			}
+		}
+		for (int i = 0; i < iwe.exceptions.size(); ++i) {
+			if (iwe.exceptions.get(i) < Math.min(this.rightBound,
+					iwe.rightBound)
+					&& (!this.exceptions.contains(iwe.exceptions.get(i)))) {
+				missingOperations.add(Messages.getOperation(iwe.exceptions
+						.get(i)));
+			}
+		}
+		return missingOperations;
+	}
+
 }
