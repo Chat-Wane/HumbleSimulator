@@ -51,7 +51,7 @@ public class Down {
 	public static void wakeUp(Integer currentTime) {
 		// #1 get if the peer must wake up
 		while (Down.downPeers.size() > 0
-				&& currentTime >= Down.downPeers.get(0).getT()
+				&& currentTime > Down.downPeers.get(0).getT()
 						+ Global.churnDuration) {
 			// #2 contact A adjacent peers randomly if they are awake and
 			// proceed to anti-entropy
@@ -66,7 +66,7 @@ public class Down {
 				}
 			}
 			// #3 remove the peer from the list of down peers
-			Down.downPeers.remove((int) 0);
+			DownElement de = Down.downPeers.remove((int) 0);
 		}
 	}
 

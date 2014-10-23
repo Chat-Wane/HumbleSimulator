@@ -30,7 +30,8 @@ public class HistoryGraph {
 		if (HistoryGraph.history.containsKey(p.getS())) {
 			return HistoryGraph.history.get(p.getS());
 		} else {
-			return new HistoryEdge(null, ROOTOPERATION);
+			return new HistoryEdge(HistoryGraph.ROOTOPERATION,
+					HistoryGraph.ROOTOPERATION);
 		}
 	}
 

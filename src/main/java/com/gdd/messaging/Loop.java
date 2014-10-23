@@ -30,9 +30,13 @@ import com.gdd.visualization.VisualizationGraph;
 public class Loop {
 
 	private final static Random rng = new Random(Global.SEED);
-	private ArrayList<Integer> creationTime = new ArrayList<Integer>();
 	private final static Normal normal = new Normal(Global.TOTALTIME / 2,
 			Global.TOTALTIME / 2 * 0.33, new DRand((int) Global.SEED));
+
+	// list of date of creation of events
+	private ArrayList<Integer> creationTime = new ArrayList<Integer>();
+	// list of date of anti-entropy protocol
+	private ArrayList<Integer> antiEntropyTime = new ArrayList<Integer>();
 
 	/**
 	 * function executed before the execution loop is started. It initializes
@@ -48,6 +52,13 @@ public class Loop {
 			this.creationTime.add(random); // rng.nextInt(Global.TOTALTIME));
 		}
 		Collections.sort(this.creationTime);
+
+		// #0.5 create the anti entropy date
+		for (int i = 0; i < (Global.PEERS * Global.TOTALTIME / Global.antientropy); ++i) {
+			Integer random = rng.nextInt(Global.TOTALTIME);
+			this.antiEntropyTime.add(random); // rng.nextInt(Global.TOTALTIME));
+		}
+		Collections.sort(this.antiEntropyTime);
 
 		// #1 create the peers and initialize their vectors
 		new Peers();
@@ -69,9 +80,35 @@ public class Loop {
 	 * start the execution of the main loop.
 	 */
 	public void execute() {
-		Iterator<Integer> iCreationTime = creationTime.iterator();
+		Iterator<Integer> iCreationTime = this.creationTime.iterator();
+		Iterator<Integer> iAntiEntropyTime = this.antiEntropyTime.iterator();
 		while (iCreationTime.hasNext()) {
 			Integer currentTime = iCreationTime.next();
+			// #-3 process anti entropies
+			boolean stop = false;
+			while (iAntiEntropyTime.hasNext() && !stop) {
+				Integer antiEntropyTime = iAntiEntropyTime.next();
+				if (antiEntropyTime > currentTime) {
+					stop = true;
+				} else {
+					// #-3a choose a peer at random among up peers
+					Peer p = Peers.getPeer(Loop.rng.nextInt(Global.PEERS));
+
+					if (!Down.isDown(p)) { // if isDown, to bad for him
+						Integer j = 0;
+						while (j < Global.A) { // do the antientropy with random
+												// peers
+							Integer uid = rng.nextInt(Global.PEERS);
+							if (!Down.isDown(Peers.getPeer(uid))) {
+								Down.antientropy(p, Peers.getPeer(uid),
+										antiEntropyTime);
+								++j;
+							}
+						}
+					}
+				}
+			}
+
 			// #-2 process the peers that go up
 			Down.wakeUp(currentTime);
 			// #-1 process the peers that go down
@@ -81,7 +118,8 @@ public class Loop {
 			// #0a for each peer
 			for (int i = 0; i < Peers.getPeers().size(); ++i) {
 				Peer p = Peers.getPeer(i);
-				if (!Down.isDown(p)) {
+				float receiveRandom = Loop.rng.nextFloat();
+				if (!Down.isDown(p) && receiveRandom < Global.msgPropagation) {
 					// #0b get the messages received by the peer
 					// if the peer is down, he does not receive new operation,
 					// however he still process the one he received (do not
@@ -171,7 +209,8 @@ public class Loop {
 					+ Stats.getLower(Peers.getPeer(i)) + "][Max "
 					+ HistoryGraph.getPeer(Peers.getPeer(i)).getTo().getC()
 					+ "][PTH " + pathLength + "] "
-					+ Arrays.toString(Vectors.getVector(i).v));
+					+ Arrays.toString(Vectors.getVector(i).v) + " [Buf "
+					+ Buffers.getBuffer(Peers.getPeer(i)).size() + "]");
 		}
 
 		// #2 export the history to a .dot file
